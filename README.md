@@ -2,6 +2,8 @@
 
 The repository for keeping bookmarklets.
 
+Unfortunetly on Github's markdown you cannot simply add comfortable links, so you have to drag and drop (on the bookmarks' bar) the code by yourself.
+
 ## Explain XKCD
 
 ```
