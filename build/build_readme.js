@@ -38,7 +38,7 @@ for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
     result = result.concat([
         ...loadPartOfFile('/*', '*/', bookmarkletFilePath),
         '',
-        '```js',
+        '```bookmarklet',
         bookmarklet(bookmarkletFilePath),
         '```',
         ''
