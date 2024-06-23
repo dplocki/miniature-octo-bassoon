@@ -6,7 +6,6 @@ function* loadPartOfFile(startToken, endToken, fileName) {
     const lines = fs.readFileSync(fileName, 'utf8').split('\n');
 
     let isBlock = !startToken;
-
     for (const line of lines) {
         if (!isBlock && line === startToken) {
             isBlock = true;
@@ -25,16 +24,16 @@ function* loadPartOfFile(startToken, endToken, fileName) {
 }
 
 function bookmarklet(bookmarkletFilePath) {
-    return 'javascript:' + encodeURIComponent('(function(){' + uglifyJS.minify(fs.readFileSync(bookmarkletFilePath, "utf8")).code + '})();')
+    return 'javascript:' + encodeURIComponent('(function(){' + uglifyJS.minify(fs.readFileSync(bookmarkletFilePath, "utf8")).code + '})();');
 }
 
 const README_START_MARKER = '## Bookmarklets';
 const bookmarkletsDirectory = '../bookmarklets';
 
-let result = [...loadPartOfFile(null, README_START_MARKER, '../README.md'), README_START_MARKER, '']
+let result = [...loadPartOfFile(null, README_START_MARKER, '../README.md'), README_START_MARKER, ''];
 
 for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
-    const bookmarkletFilePath = path.join(bookmarkletsDirectory, fileName)
+    const bookmarkletFilePath = path.join(bookmarkletsDirectory, fileName);
 
     result = result.concat([
         ...loadPartOfFile('/*', '*/', bookmarkletFilePath),
@@ -43,7 +42,7 @@ for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
         bookmarklet(bookmarkletFilePath),
         '```',
         ''
-    ])
+    ]);
 }
 
 for (const line of result) {
