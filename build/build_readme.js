@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 function *loadPartOfFile(startToken, endToken, fileName) {
     const lines = fs.readFileSync(fileName, 'utf8').split('\n');
@@ -20,4 +21,17 @@ function *loadPartOfFile(startToken, endToken, fileName) {
             yield line;
         }
     }
+}
+
+const README_START_MARKER = '## Bookmarklets';
+const bookmarkletsDirectory = '../bookmarklets';
+
+let result = [...loadPartOfFile(null, README_START_MARKER, '../README.md'), README_START_MARKER, '']
+
+for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
+    result = result.concat([...loadPartOfFile('/*', '*/', path.join(bookmarkletsDirectory, fileName)), ''])
+}
+
+for (const line of result) {
+    console.log(line);
 }
