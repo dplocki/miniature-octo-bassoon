@@ -24,7 +24,7 @@ function* loadPartOfFile(startToken, endToken, fileName) {
 }
 
 function bookmarklet(bookmarkletFilePath) {
-    return 'javascript:' + encodeURIComponent('(function(){' + uglifyJS.minify(fs.readFileSync(bookmarkletFilePath, "utf8")).code + '})();');
+    return 'javascript:' + encodeURIComponent('(function(){' + uglifyJS.minify(fs.readFileSync(bookmarkletFilePath, "utf8")).code + '})()');
 }
 
 const README_START_MARKER = '## Bookmarklets';
