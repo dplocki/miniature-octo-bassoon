@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const uglifyJS = require("uglify-js");
 
 function *loadPartOfFile(startToken, endToken, fileName) {
     const lines = fs.readFileSync(fileName, 'utf8').split('\n');
@@ -29,7 +30,16 @@ const bookmarkletsDirectory = '../bookmarklets';
 let result = [...loadPartOfFile(null, README_START_MARKER, '../README.md'), README_START_MARKER, '']
 
 for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
-    result = result.concat([...loadPartOfFile('/*', '*/', path.join(bookmarkletsDirectory, fileName)), ''])
+    const bookmarkletFile = path.join(bookmarkletsDirectory, fileName)
+
+    result = result.concat([
+        ...loadPartOfFile('/*', '*/', bookmarkletFile),
+        '',
+        '```js',
+        uglifyJS.minify(fs.readFileSync(bookmarkletFile, "utf8")).code,
+        '```',
+        ''
+    ])
 }
 
 for (const line of result) {
