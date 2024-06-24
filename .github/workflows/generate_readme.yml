@@ -48,7 +48,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         if: steps.check_prefix.outputs.prefix_found == '1'
         with:
-          author_name: 🤖 CompileBot
-          author_email: CompileBot@happyrobots.com
+          committer_name: 🤖 CompileBot
+          committer_email: CompileBot@happyrobots.com
           message: 'chore: update README.md'
           add: 'README.md'
