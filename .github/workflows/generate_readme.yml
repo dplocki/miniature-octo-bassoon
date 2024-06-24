@@ -18,7 +18,7 @@ jobs:
         id: check_prefix
         continue-on-error: true
         run: |
-          git log --format=%B -n 1 $GITHUB_SHA | grep -q "^(feat|refactor):"
+          git log --format=%B -n 1 $GITHUB_SHA | grep -Eq "^(feat|refactor):"
           echo "prefix_found=1" >> $GITHUB_OUTPUT
 
       - name: Prepare Node
