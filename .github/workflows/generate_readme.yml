@@ -1,0 +1,49 @@
+name: Rebuild README.md if necessary
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Getting the sources
+        uses: actions/checkout@v4
+
+      - name: Check for prefix in commit messages
+        id: check_prefix
+        continue-on-error: true
+        run: |
+          git log --format=%B -n 1 $GITHUB_SHA | grep -q "^(feat|refactor):"
+          echo "prefix_found=1" >> $GITHUB_OUTPUT
+
+      - name: Prepare Node
+        uses: actions/setup-node@v4
+        if: steps.check_prefix.outputs.prefix_found == '1'
+        with:
+          node-version: 20
+
+      - name: Build README.md
+        if: steps.check_prefix.outputs.prefix_found == '1'
+        run: |
+          tmpfile=$(mktemp)
+
+          pushd build
+            npm ci
+            node build_readme.js > "$tmpfile"
+          popd
+
+          mv "$tmpfile" README.md
+
+      - name: Push the generated README.md
+        uses: EndBug/add-and-commit@v9
+        if: steps.check_prefix.outputs.prefix_found == '1'
+        with:
+          author_name: 🤖 CompileBot
+          author_email: CompileBot@happyrobots.com
+          message: 'chore: update README.md'
+          add: 'README.md'
