@@ -8,6 +8,9 @@ Unfortunetly on Github's markdown you cannot simply add comfortable links, so yo
 
 ### Explain XKCD
 
+If you are on [xkcd](https://xkcd.com), it will redirect you on the proper sub-page on the [explain xkcd wiki](https://www.explainxkcd.com/). Otherwise display the alert informing about the mistake.
+
+```bookmarklet
+javascript:(function()%7Blet%20match%3Dwindow.location.href.match(%2Fhttps%3A%5C%2F%5C%2Fxkcd%5C.com%5C%2F(%5Cd%2B)%5C%2F%2F)%3Bmatch%3Fwindow.location.href%3D%22https%3A%2F%2Fwww.explainxkcd.com%2Fwiki%2Findex.php%2F%22%2Bmatch%5B1%5D%3Aalert(%22That%20is%20not%20the%20XKCD%20page%22)%3B%7D)()
 ```
-javascript:(function()%7Bconst%20url%20%3D%20window.location.href%3B%0A%20%20%20%20const%20regex%20%3D%20%2Fhttps%3A%5C%2F%5C%2Fxkcd%5C.com%5C%2F(%5Cd%2B)%5C%2F%2F%3B%0A%20%20%20%20const%20match%20%3D%20url.match(regex)%3B%0A%0A%20%20%20%20if%20(match)%20%7B%0A%20%20%20%20%20%20%20%20window.location.href%20%3D%20%60https%3A%2F%2Fwww.explainxkcd.com%2Fwiki%2Findex.php%2F%24%7Bmatch%5B1%5D%7D%60%3B%0A%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20alert('That%20is%20not%20a%20XKCD%20page')%3B%0A%20%20%20%20%7D%7D)()%3B
-```
+
