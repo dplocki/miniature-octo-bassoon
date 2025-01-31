@@ -6,6 +6,14 @@ Unfortunetly on Github's markdown you cannot simply add comfortable links, so yo
 
 ## Bookmarklets
 
+### Create tag for CodeCrafters stage
+
+If you are on the [CodeCrafters](https://app.codecrafters.io/courses/) stage page, the bookmarklet allows to read the stage's data and suggests the git tag create command for them.
+
+```bookmarklet
+javascript:(function()%7Bundefined%7D)()
+```
+
 ### Explain XKCD
 
 If you are on [xkcd](https://xkcd.com), it will redirect you on the proper sub-page on the [explain xkcd wiki](https://www.explainxkcd.com/). Otherwise display the alert informing about the mistake.
