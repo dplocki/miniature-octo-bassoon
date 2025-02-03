@@ -2,13 +2,13 @@
 
 ## Running build system inside the container
 
-Download image:
+Download an image:
 
 ```sh
 docker pull node
 ```
 
-Run downloaded image:
+Run the downloaded image:
 
 ```sh
 docker run -it -v $(pwd):/home/node node bash
@@ -22,3 +22,9 @@ Install required packages:
 npm ci
 ```
 
+### Run
+
+```sh
+cd /home/node/build
+node build_readme.js
+```
