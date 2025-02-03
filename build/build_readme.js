@@ -24,13 +24,21 @@ function* loadPartOfFile(startToken, endToken, fileName) {
 }
 
 function bookmarklet(bookmarkletFilePath) {
-    const minifyResult = uglifyJS.minify(fs.readFileSync(bookmarkletFilePath, "utf8"));
+    const minifyResult = uglifyJS.minify(
+        fs.readFileSync(bookmarkletFilePath, "utf8"), {
+        compress: {
+            negate_iife: false,
+        },
+        output: {
+            semicolons: false,
+        },
+    });
 
     if (minifyResult.error) {
         throw new Error(`Minification error: ${minifyResult.error}`);
     }
 
-    return 'javascript:' + encodeURIComponent(minifyResult.code);
+    return 'javascript:' + encodeURIComponent(minifyResult.code.trim());
 }
 
 const README_START_MARKER = '## Bookmarklets';
