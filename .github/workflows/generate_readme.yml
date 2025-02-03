@@ -23,7 +23,7 @@ jobs:
         id: check_prefix
         continue-on-error: true
         run: |
-          git log --format=%B -n 1 $GITHUB_SHA | grep -Eq "^(feat|docs|fix|chore|refactor|perf)(\([a-zA-Z0-9\s_-]+\))?:"
+          git log --format=%B -n 1 $GITHUB_SHA | grep -Eq "^(feat|docs|fix|chore|refactor|perf)(\([a-zA-Z0-9 _-]+\))?:"
           echo "prefix_found=1" >> $GITHUB_OUTPUT
 
       - name: Prepare Node
