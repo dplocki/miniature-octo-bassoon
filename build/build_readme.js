@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const uglifyJS = require("uglify-js");
+const terser = require('terser');
 
 function* loadPartOfFile(startToken, endToken, fileName) {
     const lines = fs.readFileSync(fileName, 'utf8').split('\n');
@@ -23,8 +23,8 @@ function* loadPartOfFile(startToken, endToken, fileName) {
     }
 }
 
-function bookmarklet(bookmarkletFilePath) {
-    const minifyResult = uglifyJS.minify(
+async function bookmarklet(bookmarkletFilePath) {
+    const minifyResult = await terser.minify(
         fs.readFileSync(bookmarkletFilePath, "utf8"), {
         compress: {
             negate_iife: false,
@@ -41,24 +41,32 @@ function bookmarklet(bookmarkletFilePath) {
     return 'javascript:' + encodeURIComponent(minifyResult.code.trim());
 }
 
-const README_START_MARKER = '## Bookmarklets';
-const bookmarkletsDirectory = '../bookmarklets';
+async function buildReadme() {
+    const README_START_MARKER = '## Bookmarklets';
+    const bookmarkletsDirectory = '../bookmarklets';
 
-let result = [...loadPartOfFile(null, README_START_MARKER, '../README.md'), README_START_MARKER, ''];
+    let result = [...loadPartOfFile(null, README_START_MARKER, '../README.md'), README_START_MARKER, ''];
 
-for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
-    const bookmarkletFilePath = path.join(bookmarkletsDirectory, fileName);
+    for (const fileName of fs.readdirSync(bookmarkletsDirectory)) {
+        const bookmarkletFilePath = path.join(bookmarkletsDirectory, fileName);
 
-    result = result.concat([
-        ...loadPartOfFile('/*', '*/', bookmarkletFilePath),
-        '',
-        '```bookmarklet',
-        bookmarklet(bookmarkletFilePath),
-        '```',
-        ''
-    ]);
+        result = result.concat([
+            ...loadPartOfFile('/*', '*/', bookmarkletFilePath),
+            '',
+            '```bookmarklet',
+            await bookmarklet(bookmarkletFilePath),
+            '```',
+            ''
+        ]);
+    }
+
+    for (const line of result) {
+        console.log(line);
+    }
 }
 
-for (const line of result) {
-    console.log(line);
-}
+buildReadme()
+    .catch(error => {
+        console.error(error);
+        process.exit(1);
+    });
